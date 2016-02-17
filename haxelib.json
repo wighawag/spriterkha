@@ -1,0 +1,13 @@
+{
+	"name":"spriterkha",
+	"license":"MIT",
+	"tags":["spriter", "kha"],
+	"description":"a kha renderer for spriter runtime",
+	"contributors":["wighawag"],
+	"releasenote":"first version",
+	"version":"0.1.0",
+	"url":"https://github.com/wighawag/spriterkha",
+	"classPath":"Sources",
+	"dependencies":{
+	}
+}
