@@ -5,9 +5,10 @@
 	"description":"a kha renderer for spriter runtime",
 	"contributors":["wighawag"],
 	"releasenote":"first version",
-	"version":"0.1.0",
+	"version":"0.1.1",
 	"url":"https://github.com/wighawag/spriterkha",
 	"classPath":"Sources",
 	"dependencies":{
+		"imagesheet":"0.1.0"
 	}
 }
