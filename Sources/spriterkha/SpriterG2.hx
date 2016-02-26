@@ -38,7 +38,7 @@ class SpriterG2 {
 			var scaleY = sprites.scaleY(current); 
 			var angle = -sprites.angle(current);
 			if(subImage.rotated){
-			  	angle -= Math.PI/2;
+				angle -= Math.PI/2;
 				var tmp = originX;
 				originX = pivotY * height - (height - subImage.height - offsetY);
 				originY = pivotX * width - offsetX;
