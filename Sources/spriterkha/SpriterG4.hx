@@ -8,15 +8,15 @@ import kha.graphics4.VertexBuffer;
 import kha.graphics4.IndexBuffer;
 
 import imagesheet.ImageSheet;
+import kha.arrays.Float32Array;
 
 class SpriterG4 {
 	
-	public static function drawSpriter(vertexBuffer : VertexBuffer, vertexStart : Int, vertexSize : Int, posStride : Int, texStride : Int, indexBuffer : IndexBuffer, indexStart : Int,  imageSheet : ImageSheet, entity : EntityInstance, x : Float, y : Float){
+	public static function drawSpriter(vertexData : Float32Array, vertexStart : Int, vertexSize : Int, posStride : Int, texStride : Int, indexData : Array<Int>, indexStart : Int, lastVertex : Int,  imageSheet : ImageSheet, entity : EntityInstance, x : Float, y : Float){
 		var sprites = entity.sprites;
 		var current = sprites.start;
 		var counter = 0;
 		var indexCounter = 0;
-		var vData = vertexBuffer.lock();
 		while (current < sprites.top){
 			var folderId = sprites.folderId(current);
 			var fileId = sprites.fileId(current);
@@ -57,8 +57,7 @@ class SpriterG4 {
 				subHeight = subImage.width;
 			}
 			
-			// g2.drawScaledSubImage(imageSheet.image, subImage.x, subImage.y, subWidth, subHeight,0,0,subWidth, subHeight);
-			
+
 			var x = locationX;
 			var y = locationY;
 			
@@ -84,26 +83,40 @@ class SpriterG4 {
 			var brY = y + (dx + w) * sin + (dy + h) * cos;
 			
 			
-			vData.set(vertexStart+vertexSize*counter+posStride+0,tlX);
-			vData.set(vertexStart+vertexSize*counter+posStride+1,tlY);
-			vData.set(vertexStart+vertexSize*counter+texStride+0,subImage.x);
-			vData.set(vertexStart+vertexSize*counter+texStride+1,subImage.y);
+			vertexData.set(vertexStart+vertexSize*counter+posStride+0,tlX);
+			vertexData.set(vertexStart+vertexSize*counter+posStride+1,tlY);
+			vertexData.set(vertexStart+vertexSize*counter+texStride+0,subImage.x / imageSheet.image.width);
+			vertexData.set(vertexStart+vertexSize*counter+texStride+1,subImage.y / imageSheet.image.height);
 			
-			vData.set(vertexStart+vertexSize*counter+posStride+2,trX);
-			vData.set(vertexStart+vertexSize*counter+posStride+3,trY);
-			vData.set(vertexStart+vertexSize*counter+texStride+2,subImage.x + subWidth);
-			vData.set(vertexStart+vertexSize*counter+texStride+3,subImage.y);
+			vertexData.set(vertexStart+vertexSize*counter+posStride+vertexSize*1+0,trX);
+			vertexData.set(vertexStart+vertexSize*counter+posStride+vertexSize*1+1,trY);
+			vertexData.set(vertexStart+vertexSize*counter+texStride+vertexSize*1+0,(subImage.x + subWidth) / imageSheet.image.width);
+			vertexData.set(vertexStart+vertexSize*counter+texStride+vertexSize*1+1,subImage.y / imageSheet.image.height);
 			
+			vertexData.set(vertexStart+vertexSize*counter+posStride+vertexSize*2+0,blX);
+			vertexData.set(vertexStart+vertexSize*counter+posStride+vertexSize*2+1,blY);
+			vertexData.set(vertexStart+vertexSize*counter+texStride+vertexSize*2+0,subImage.x / imageSheet.image.width );
+			vertexData.set(vertexStart+vertexSize*counter+texStride+vertexSize*2+1,(subImage.y + subHeight) / imageSheet.image.height);
 			
-			//TODO more
+			vertexData.set(vertexStart+vertexSize*counter+posStride+vertexSize*3+0,brX);
+			vertexData.set(vertexStart+vertexSize*counter+posStride+vertexSize*3+1,brY);
+			vertexData.set(vertexStart+vertexSize*counter+texStride+vertexSize*3+0,(subImage.x + subWidth) / imageSheet.image.width );
+			vertexData.set(vertexStart+vertexSize*counter+texStride+vertexSize*3+1,(subImage.y + subHeight) / imageSheet.image.height);
+			counter +=4;
 			
-			//TODO indexBuffer.set(indexStart+0,);
+			indexData[indexStart+indexCounter+0] = lastVertex+1;
+			indexData[indexStart+indexCounter+1] = lastVertex+2;
+			indexData[indexStart+indexCounter+2] = lastVertex+3;
+			indexData[indexStart+indexCounter+3] = lastVertex+3;
+			indexData[indexStart+indexCounter+4] = lastVertex+2;
+			indexData[indexStart+indexCounter+5] = lastVertex+4;  
+			indexCounter += 6;
+			lastVertex += 4;
 			
 			current +=entity.sprites.structSize;
-			counter +=4;
-			indexCounter += 6;
+			
+			
 		}
-		vertexBuffer.unlock();
 	}
 
 }
