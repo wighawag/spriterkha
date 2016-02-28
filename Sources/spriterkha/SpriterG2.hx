@@ -97,11 +97,13 @@ class SpriterG2 {
 			// }
 
 			//spriteBatch.Draw(texture, location, null, color, angle, origin, scale, effects, 1);
-			//var transformation = FastMatrix4.translation(-originX, -originY, 0).multmat(FastMatrix4.r)
-			g2.transformation = /*FastMatrix3.translation(originX, originY).multmat(FastMatrix3.rotation(angle))*/FastMatrix3.rotation(angle).multmat(FastMatrix3.scale(scaleX,scaleY)).multmat(FastMatrix3.translation(-originX, -originY));
+			
+			g2.transformation = FastMatrix3.rotation(angle).multmat(FastMatrix3.scale(scaleX,scaleY)).multmat(FastMatrix3.translation(-originX, -originY));
 			g2.transformation = FastMatrix3.translation(locationX, locationY).multmat(g2.transformation);
 			g2.color = Color.White;
 			g2.drawRect(0, 0, width, height);
+			
+			// g2.transformation = FastMatrix3.identity();
 			
 			// var x = locationX;
 			// var y = locationY;

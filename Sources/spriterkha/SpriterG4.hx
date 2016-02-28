@@ -67,8 +67,8 @@ class SpriterG4 {
 			var cos = Math.cos(angle);
 			var sin = Math.sin(angle);
 			
-			var w = width * scaleX;
-			var h = height * scaleY;
+			var w = subWidth * scaleX;
+			var h = subHeight * scaleY;
 			
 			var tlX = x + dx * cos - dy * sin;
 			var tlY = y + dx * sin + dy * cos;
