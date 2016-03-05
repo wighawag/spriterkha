@@ -26,7 +26,8 @@ class SpriterG4 {
 			if(subImage == null){
 				//drawDebugSpriter(g2,entity, x,y);
 				trace("cannot find subImage for " + filename);
-				return;
+				current +=entity.sprites.structSize;
+				continue;
 			}
 			
 			var pivotX = sprites.pivotX(current);
@@ -82,26 +83,29 @@ class SpriterG4 {
 			var brX = x + (dx + w) * cos - (dy + h) * sin;
 			var brY = y + (dx + w) * sin + (dy + h) * cos;
 			
-			
 			vertexData.set(vertexStart+vertexSize*counter+posStride+0,tlX);
 			vertexData.set(vertexStart+vertexSize*counter+posStride+1,tlY);
 			vertexData.set(vertexStart+vertexSize*counter+texStride+0,subImage.x / imageSheet.image.width);
 			vertexData.set(vertexStart+vertexSize*counter+texStride+1,subImage.y / imageSheet.image.height);
+			vertexData.set(vertexStart+vertexSize*counter+4,-angle);
 			
 			vertexData.set(vertexStart+vertexSize*counter+posStride+vertexSize*1+0,trX);
 			vertexData.set(vertexStart+vertexSize*counter+posStride+vertexSize*1+1,trY);
 			vertexData.set(vertexStart+vertexSize*counter+texStride+vertexSize*1+0,(subImage.x + subWidth) / imageSheet.image.width);
 			vertexData.set(vertexStart+vertexSize*counter+texStride+vertexSize*1+1,subImage.y / imageSheet.image.height);
+			vertexData.set(vertexStart+vertexSize*counter+4+vertexSize*1,-angle);
 			
 			vertexData.set(vertexStart+vertexSize*counter+posStride+vertexSize*2+0,blX);
 			vertexData.set(vertexStart+vertexSize*counter+posStride+vertexSize*2+1,blY);
 			vertexData.set(vertexStart+vertexSize*counter+texStride+vertexSize*2+0,subImage.x / imageSheet.image.width );
 			vertexData.set(vertexStart+vertexSize*counter+texStride+vertexSize*2+1,(subImage.y + subHeight) / imageSheet.image.height);
+			vertexData.set(vertexStart+vertexSize*counter+4+vertexSize*2,-angle);
 			
 			vertexData.set(vertexStart+vertexSize*counter+posStride+vertexSize*3+0,brX);
 			vertexData.set(vertexStart+vertexSize*counter+posStride+vertexSize*3+1,brY);
 			vertexData.set(vertexStart+vertexSize*counter+texStride+vertexSize*3+0,(subImage.x + subWidth) / imageSheet.image.width );
 			vertexData.set(vertexStart+vertexSize*counter+texStride+vertexSize*3+1,(subImage.y + subHeight) / imageSheet.image.height);
+			vertexData.set(vertexStart+vertexSize*counter+4+vertexSize*3,-angle);
 			counter +=4;
 			
 			indexData[indexStart+indexCounter+0] = lastVertex+1;
