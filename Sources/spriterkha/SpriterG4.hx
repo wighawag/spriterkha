@@ -6,13 +6,18 @@ import spriter.EntityInstance;
 import kha.Color;
 import kha.graphics4.VertexBuffer;
 import kha.graphics4.IndexBuffer;
-
+import kha.graphics4.VertexStructure;
 import imagesheet.ImageSheet;
 import kha.arrays.Float32Array;
 
 class SpriterG4 {
 	
-	public static function drawSpriter(vertexData : Float32Array, vertexStart : Int, vertexSize : Int, posStride : Int, texStride : Int, indexData : Array<Int>, indexStart : Int, lastVertex : Int,  imageSheet : ImageSheet, entity : EntityInstance, x : Float, y : Float){
+	// public static function writeSpriter(vertexData : Float32Array, structure : VertexStructure, vertexStart : Int, indexData : Array<Int>, indexStart : Int , vertexIndex : Int, imagesheet : ImageSheet, entity : EntityInstance, x : Float, y : Float) : Int{
+	// 	var posStride = structure.
+	// 	return drawSpriter(vertexData,vertexSize)
+	// }
+	
+	public static function writeSpriter(vertexData : Float32Array, vertexStart : Int, vertexSize : Int, posStride : Int, texStride : Int, rotStride : Int, indexData : Array<Int>, indexStart : Int, vertexIndex : Int,  imageSheet : ImageSheet, entity : EntityInstance, x : Float, y : Float) : Int{
 		var sprites = entity.sprites;
 		var current = sprites.start;
 		var counter = 0;
@@ -87,40 +92,41 @@ class SpriterG4 {
 			vertexData.set(vertexStart+vertexSize*counter+posStride+1,tlY);
 			vertexData.set(vertexStart+vertexSize*counter+texStride+0,subImage.x / imageSheet.image.width);
 			vertexData.set(vertexStart+vertexSize*counter+texStride+1,subImage.y / imageSheet.image.height);
-			vertexData.set(vertexStart+vertexSize*counter+4,-angle);
+			vertexData.set(vertexStart+vertexSize*counter+rotStride,-angle);
 			
 			vertexData.set(vertexStart+vertexSize*counter+posStride+vertexSize*1+0,trX);
 			vertexData.set(vertexStart+vertexSize*counter+posStride+vertexSize*1+1,trY);
 			vertexData.set(vertexStart+vertexSize*counter+texStride+vertexSize*1+0,(subImage.x + subWidth) / imageSheet.image.width);
 			vertexData.set(vertexStart+vertexSize*counter+texStride+vertexSize*1+1,subImage.y / imageSheet.image.height);
-			vertexData.set(vertexStart+vertexSize*counter+4+vertexSize*1,-angle);
+			vertexData.set(vertexStart+vertexSize*counter+rotStride+vertexSize*1,-angle);
 			
 			vertexData.set(vertexStart+vertexSize*counter+posStride+vertexSize*2+0,blX);
 			vertexData.set(vertexStart+vertexSize*counter+posStride+vertexSize*2+1,blY);
 			vertexData.set(vertexStart+vertexSize*counter+texStride+vertexSize*2+0,subImage.x / imageSheet.image.width );
 			vertexData.set(vertexStart+vertexSize*counter+texStride+vertexSize*2+1,(subImage.y + subHeight) / imageSheet.image.height);
-			vertexData.set(vertexStart+vertexSize*counter+4+vertexSize*2,-angle);
+			vertexData.set(vertexStart+vertexSize*counter+rotStride+vertexSize*2,-angle);
 			
 			vertexData.set(vertexStart+vertexSize*counter+posStride+vertexSize*3+0,brX);
 			vertexData.set(vertexStart+vertexSize*counter+posStride+vertexSize*3+1,brY);
 			vertexData.set(vertexStart+vertexSize*counter+texStride+vertexSize*3+0,(subImage.x + subWidth) / imageSheet.image.width );
 			vertexData.set(vertexStart+vertexSize*counter+texStride+vertexSize*3+1,(subImage.y + subHeight) / imageSheet.image.height);
-			vertexData.set(vertexStart+vertexSize*counter+4+vertexSize*3,-angle);
+			vertexData.set(vertexStart+vertexSize*counter+rotStride+vertexSize*3,-angle);
 			counter +=4;
 			
-			indexData[indexStart+indexCounter+0] = lastVertex+1;
-			indexData[indexStart+indexCounter+1] = lastVertex+2;
-			indexData[indexStart+indexCounter+2] = lastVertex+3;
-			indexData[indexStart+indexCounter+3] = lastVertex+3;
-			indexData[indexStart+indexCounter+4] = lastVertex+2;
-			indexData[indexStart+indexCounter+5] = lastVertex+4;  
+			indexData[indexStart+indexCounter+0] = vertexIndex+0;
+			indexData[indexStart+indexCounter+1] = vertexIndex+1;
+			indexData[indexStart+indexCounter+2] = vertexIndex+2;
+			indexData[indexStart+indexCounter+3] = vertexIndex+2;
+			indexData[indexStart+indexCounter+4] = vertexIndex+1;
+			indexData[indexStart+indexCounter+5] = vertexIndex+3;  
 			indexCounter += 6;
-			lastVertex += 4;
+			vertexIndex += 4;
 			
 			current +=entity.sprites.structSize;
 			
 			
 		}
+		return vertexIndex;
 	}
 
 }
