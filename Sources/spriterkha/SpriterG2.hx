@@ -44,16 +44,6 @@ class SpriterG2 {
 				originY = pivotX * width - offsetX;
 			}
 			
-			g2.transformation = FastMatrix3.rotation(angle).multmat(FastMatrix3.scale(scaleX,scaleY)).multmat(FastMatrix3.translation(-originX, -originY));
-			g2.transformation = FastMatrix3.translation(locationX, locationY).multmat(g2.transformation);
-			
-			// if(subImage.rotated){
-			// 	g2.color = Color.Red;
-			// }else{
-				g2.color = Color.White;
-			// }
-			
-			
 			var subWidth = subImage.width;
 			var subHeight = subImage.height;
 			if(subImage.rotated){
@@ -61,7 +51,9 @@ class SpriterG2 {
 				subHeight = subImage.width;
 			}
 			
+			g2.pushTransformation(g2.transformation.multmat(FastMatrix3.translation(locationX, locationY).multmat(FastMatrix3.rotation(angle).multmat(FastMatrix3.scale(scaleX,scaleY)).multmat(FastMatrix3.translation(-originX, -originY)))));
 			g2.drawScaledSubImage(imageSheet.image, subImage.x, subImage.y, subWidth, subHeight,0,0,subWidth, subHeight);
+			g2.popTransformation();
 			
 			current+=entity.sprites.structSize;
 		}
