@@ -19,8 +19,12 @@ class SpriterG2 {
 			var subImage = imageSheet.getSubImage(filename);
 			
 			if(subImage == null){
-				drawDebugSpriter(g2,entity, x,y);
-				return;
+				//TODO if debug:
+				// trace("filename " + filename + " missing");
+				// drawDebugSpriter(g2,entity, x,y);
+				//else skip:
+				current+=entity.sprites.structSize;
+				continue;
 			}
 			
 			var pivotX = sprites.pivotX(current);
